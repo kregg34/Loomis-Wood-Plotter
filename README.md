@@ -28,4 +28,5 @@ Currently Implemented Features:
 11) Save and Load the assignments currently in memory. This is done by going to File -> Save Assignments...
     or File -> Load Assignments...
     
-
+![alt text](https://raw.githubusercontent.com/kregg34/Loomis-Wood-Plotter/edit/master/Loomis-Plotter 1.PNG)
+      
