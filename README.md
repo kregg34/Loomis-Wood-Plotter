@@ -30,3 +30,8 @@ Graphical program for displaying data in a Loomis-Wood format; Useful for the da
 
 # Screenshots
 
+![loomis-plotter 1](https://user-images.githubusercontent.com/36011386/51076489-70227c80-166f-11e9-93de-bae41656add6.PNG)
+
+![loomis-plotter 2](https://user-images.githubusercontent.com/36011386/51076492-73b60380-166f-11e9-9c52-8b9b02a3e1f4.PNG)
+
+![loomis-plotter 3](https://user-images.githubusercontent.com/36011386/51076493-744e9a00-166f-11e9-87b9-6b2717e180a8.PNG)
