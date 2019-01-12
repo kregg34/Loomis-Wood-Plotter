@@ -1,7 +1,7 @@
 # Loomis-Wood-Plotter
 Graphical program for displaying data in a Loomis-Wood format; Useful for the data analysis of asymmetric top molecules.
 
-Currently Implemented Features:
+# Currently Implemented Features:
 1)  View the spectra in a Loomis-Wood format by going to Display -> Create Loomis-Wood Diagram and 
     entering in the desired parameters.
 2)  Navigate through the spectra by using the arrow buttons in the top right of the display
@@ -27,3 +27,6 @@ Currently Implemented Features:
     final is the row width of the Loomis-Wood diagrams.
 11) Save and Load the assignments currently in memory. This is done by going to File -> Save Assignments...
     or File -> Load Assignments...
+
+# Screenshots
+
