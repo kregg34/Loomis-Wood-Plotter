@@ -1,6 +1,5 @@
 package loomisWood;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -44,7 +43,7 @@ public class IntensityJDialog extends CustomJDialog
 	
 	public void initComponents() 
 	{
-        panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+        panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
         startField = new JTextField(LoomisDisplay.getLowIntensityValue() + "");
         endField = new JTextField(LoomisDisplay.getHighIntensityValue() + "");
         fromLabel = new JLabel("Lower Bound");

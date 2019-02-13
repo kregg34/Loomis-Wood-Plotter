@@ -15,13 +15,14 @@ public class SubBandContainer implements Serializable
 	private static SubBand subBand = new SubBand();
 	private static double tolerance;
 	
-	public static void setSubBandInfo(int lowerK, int upperK, int lowerVt, int upperVt, String note) 
+	public static void setSubBandInfo(int lowerK, int upperK, int lowerVt, int upperVt, String note, String symmetryType) 
 	{
 		subBand.setLowerK(lowerK);
 		subBand.setUpperK(upperK);
 		subBand.setLowerVt(lowerVt);
 		subBand.setUpperVt(upperVt);
 		subBand.setNote(note);
+		subBand.setSymmetry(symmetryType);
 	}
 	
 	public static void addSubBand() 

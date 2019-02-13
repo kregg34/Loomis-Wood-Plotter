@@ -1,7 +1,6 @@
 package loomisWood;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class SubBand implements Serializable
@@ -10,15 +9,16 @@ public class SubBand implements Serializable
 	
 	private ArrayList<Branch> branchArray = new ArrayList<Branch>();;
 	private int upperK, lowerK, upperVt, lowerVt;
-	private String note;
+	private String note, symmetryType;
 	
-	public SubBand(int lowerK, int upperK, int lowerVt, int upperVt, String note)
+	public SubBand(int lowerK, int upperK, int lowerVt, int upperVt, String note, String symmetryType)
 	{
 		this.lowerK   = lowerK;
 		this.upperK   = upperK;
 		this.lowerVt  = lowerVt;
 		this.upperVt  = upperVt;
 		this.note     = note;
+		this.symmetryType = symmetryType;
 	}
 	
 	public SubBand()
@@ -82,30 +82,14 @@ public class SubBand implements Serializable
 
 	public String toStringHTML() 
 	{
-		String arrow = "-";
-		try 
-		{
-			arrow = new String(((char) 8592 + "").getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) 
-		{
-			e.printStackTrace();
-		}
-		return "K values: " + upperK + arrow + lowerK + "<br>Torsional values: "
-			+ upperVt + arrow + lowerVt + "<br>Additional Note: " + note;
+		return "Symmetry Type: " + symmetryType + "<br>K values: " + upperK + "&lt;" + lowerK + "<br>Torsional values: "
+			+ upperVt + "&lt;" + lowerVt + "<br>Additional Note: " + note;
 	}
 	
 	public String toString() 
 	{
-		String arrow = "-";
-		try
-		{
-			arrow = new String(((char) 8592 + "").getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) 
-		{
-			e.printStackTrace();
-		}
-		return "K values: " + upperK + arrow + lowerK + "\nTorsional values: "
-			+ upperVt + arrow + lowerVt + "\nAdditional Note: " + note;
+		return "Symmetry Type: " + symmetryType + "\nK values: " + upperK + "<" + lowerK + "\nTorsional values: "
+			+ upperVt + "<" + lowerVt + "\nAdditional Note: " + note;
 	}
 	
 	public String getNote() 
@@ -116,6 +100,16 @@ public class SubBand implements Serializable
 	public void setNote(String note) 
 	{
 		this.note = note;
+	}
+	
+	public String getSymmetry() 
+	{
+		return symmetryType;
+	}
+	
+	public void setSymmetry(String symmetryType) 
+	{
+		this.symmetryType = symmetryType;
 	}
 	
 	public int getUpperK()

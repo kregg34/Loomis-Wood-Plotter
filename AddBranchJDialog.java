@@ -1,6 +1,5 @@
 package loomisWood;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -9,7 +8,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import javax.swing.CellEditor;
@@ -115,7 +113,7 @@ public class AddBranchJDialog extends CustomJDialog
 
 	private void initComponents()
 	{
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 		branchType = new JComboBox<String>();
 		table = new ExcelJTable();
 		label = new JLabel("Branch Type");
@@ -135,40 +133,30 @@ public class AddBranchJDialog extends CustomJDialog
 		branchType.setFocusable(false);
 		((JLabel)branchType.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		
-		String arrow = "-";
-		
-		try 
-		{
-			arrow = new String(((char) 8592 + "").getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) 
-		{
-			e.printStackTrace();
-		}
-		
 		branchType.setFont(new Font("Arial", Font.PLAIN, 22));
 		branchType.addItem("Q");
 		branchType.addItem("P");
 		branchType.addItem("R");
 		branchType.addItem("Q+");
 		branchType.addItem("Q-");
-		branchType.addItem("Q+" + arrow + "-");
-		branchType.addItem("Q-" + arrow + "+");
+		branchType.addItem("Q+<-");
+		branchType.addItem("Q-<+");
 		branchType.addItem("P+");
 		branchType.addItem("P-");
-		branchType.addItem("P+" + arrow + "-");
-		branchType.addItem("P-" + arrow + "+");
+		branchType.addItem("P+<-");
+		branchType.addItem("P-<+");
 		branchType.addItem("R+");
 		branchType.addItem("R-");
-		branchType.addItem("R+" + arrow + "-");
-		branchType.addItem("R-" + arrow + "+");
+		branchType.addItem("R+<-");
+		branchType.addItem("R-<+");
 		
 		confirmButton.setPreferredSize(new Dimension(300,30));
 		confirmButton.setFont(new Font("Arial", Font.PLAIN, 22));
 		confirmButton.setFocusable(false);
 		confirmButton.addActionListener(new EventHandling());
 		
-		String[] columnNames = {"J", "Wavenumber (cm^-1)"};
-		Object[][] data = new Object[100][2];
+		String[] columnNames = {"J", "Wave-number", "Intensity"};
+		Object[][] data = new Object[100][3];
 		
 		for(int j = 0; j < 100; j++) 
 		{
@@ -178,6 +166,8 @@ public class AddBranchJDialog extends CustomJDialog
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         
         table.setModel(model);
+        table.getColumn(columnNames[1]).setPreferredWidth(230);
+        table.getColumn(columnNames[2]).setPreferredWidth(230);
         
         scrollPane.setPreferredSize(new Dimension(400, 510));
 	}
@@ -231,8 +221,14 @@ public class AddBranchJDialog extends CustomJDialog
 
 				for(int row = 0; row < table.getRowCount(); row++) 
 				{
-					if(table.getValueAt(row, 1) != null)
+					if(table.getValueAt(row, 1) != null && table.getValueAt(row, 2) != null)
 					{
+						//if the wave-number or intensity field is blank, skip this row
+						if(table.getValueAt(row, 1).equals("") || table.getValueAt(row, 2).equals("")) 
+						{
+							continue;
+						}
+						
 						int jVal;
 						double waveNum;
 						
@@ -247,6 +243,7 @@ public class AddBranchJDialog extends CustomJDialog
 						}
 
 						branchArr.add(new Tuple(jVal, waveNum));
+					
 					}
 				}
 				

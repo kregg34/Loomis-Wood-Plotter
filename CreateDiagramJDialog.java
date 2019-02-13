@@ -1,6 +1,5 @@
 package loomisWood;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -42,7 +41,7 @@ public class CreateDiagramJDialog extends CustomJDialog
 		widthField = new JTextField();
 		startLabel = new JLabel("Starting Value");
 		widthLabel = new JLabel("Row Width");
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 	}
 	
 	private void setComponentSettings()

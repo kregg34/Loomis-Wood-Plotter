@@ -89,7 +89,7 @@ public class ViewAssignmentsJDialog extends CustomJDialog
 		scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 		
 		backButton = new JButton("Back");
 		

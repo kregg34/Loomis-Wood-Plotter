@@ -42,7 +42,7 @@ public class SplitDiagramJDialog extends CustomJDialog
 	{
 		comboBox = new JComboBox<Integer>();
 		label = new JLabel("<html> Split the diagram into<br>how many parts? </html>");
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 		confirmButton = new JButton("Confirm");
 	}
 

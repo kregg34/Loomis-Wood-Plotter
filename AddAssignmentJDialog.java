@@ -12,10 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class AddAssignmentJDialog extends CustomJDialog
@@ -28,8 +30,9 @@ public class AddAssignmentJDialog extends CustomJDialog
 	private JButton addBranchButton, addAssignButton;
 	private JScrollPane scrollPane;
 	private JTextField lowerKField, upperKField, lowerVtField, upperVtField, noteField;
-	private JLabel lowerKLabel, upperKLabel, lowerVtLabel, upperVtLabel, noteLabel;
+	private JLabel lowerKLabel, upperKLabel, lowerVtLabel, upperVtLabel, noteLabel, symmetryLabel;
 	private GradientPanel panel;
+	private JComboBox<String> symmetryBox;
 
 	public AddAssignmentJDialog(int widthIn, int heightIn, String titleIn, Image iconIn)
 	{
@@ -66,8 +69,11 @@ public class AddAssignmentJDialog extends CustomJDialog
 		lowerVtLabel = new JLabel("Lower Vt");
 		upperVtLabel = new JLabel("Upper Vt");
 		noteLabel    = new JLabel("Notes (Optional)");
+		symmetryLabel = new JLabel("Symmetry Type");
 		
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		symmetryBox = new JComboBox<String>();
+		
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 	}
 	
 	private void setComponentSettings()
@@ -94,6 +100,7 @@ public class AddAssignmentJDialog extends CustomJDialog
 		lowerVtLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		upperVtLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		noteLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		symmetryLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		
 		Dimension fieldDim = new Dimension(100,30);
 		lowerKField.setPreferredSize(fieldDim);
@@ -112,6 +119,15 @@ public class AddAssignmentJDialog extends CustomJDialog
 		addBranchButton.setPreferredSize(new Dimension(100,30));
 		addBranchButton.setFocusable(false);
 		addBranchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		symmetryBox.setPreferredSize(new Dimension(100,30));
+		symmetryBox.setFocusable(false);
+		((JLabel)symmetryBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+		symmetryBox.setFont(new Font("Arial", Font.PLAIN, 18));
+		symmetryBox.addItem("");
+		symmetryBox.addItem("E1");
+		symmetryBox.addItem("E2");
+		symmetryBox.addItem("A");
 	}
 	
 	private void addComponents()
@@ -134,48 +150,58 @@ public class AddAssignmentJDialog extends CustomJDialog
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		panel.add(symmetryLabel, gbc);
+		
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		panel.add(symmetryBox, gbc);
+		
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 		panel.add(lowerKLabel, gbc);
 		
 		gbc.gridx = 1;
-		gbc.gridy = 2;
+		gbc.gridy = 3;
 		panel.add(lowerKField, gbc);
 		
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		panel.add(upperKLabel, gbc);
 		
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		panel.add(upperKField, gbc);
 		
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		panel.add(lowerVtLabel, gbc);
 		
 		gbc.gridx = 1;
-		gbc.gridy = 4;
+		gbc.gridy = 5;
 		panel.add(lowerVtField, gbc);
 		
 		gbc.gridx = 0;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		panel.add(upperVtLabel, gbc);
 		
 		gbc.gridx = 1;
-		gbc.gridy = 5;
+		gbc.gridy = 6;
 		panel.add(upperVtField, gbc);
 		
 		gbc.gridx = 0;
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		panel.add(noteLabel, gbc);
 		
 		gbc.gridx = 1;
-		gbc.gridy = 6;
+		gbc.gridy = 7;
 		panel.add(noteField, gbc);
 		
 		gbc.insets = new Insets(20,15,5,15);
 		gbc.gridwidth = 2;
 		gbc.gridx = 0;
-		gbc.gridy = 7;
+		gbc.gridy = 8;
 		panel.add(addAssignButton, gbc);
 		
 		add(panel);
@@ -197,8 +223,14 @@ public class AddAssignmentJDialog extends CustomJDialog
 			
 			if(e.getSource() == addAssignButton) 
 			{
+				if(symmetryBox.getSelectedItem().equals("")) 
+				{
+					JOptionPane.showMessageDialog(null, "You must first select a symmetry type");
+					return;
+				}
+				
 				int lowerK, upperK, lowerVt, upperVt;
-				String note;
+				String note, symmetryType;
 				
 				try
 				{
@@ -207,6 +239,7 @@ public class AddAssignmentJDialog extends CustomJDialog
 					lowerVt = Integer.parseInt(lowerVtField.getText());
 					upperVt = Integer.parseInt(upperVtField.getText());
 					note    = noteField.getText();
+					symmetryType = (String) symmetryBox.getSelectedItem();
 				}catch(NumberFormatException nfe) 
 				{
 					JOptionPane.showMessageDialog(null, "Trouble reading one of the fields");
@@ -221,7 +254,7 @@ public class AddAssignmentJDialog extends CustomJDialog
 				
 				//check if assignment already exists! :)
 				
-				SubBandContainer.setSubBandInfo(lowerK, upperK, lowerVt, upperVt, note);
+				SubBandContainer.setSubBandInfo(lowerK, upperK, lowerVt, upperVt, note, symmetryType);
 				SubBandContainer.addSubBand();
 				SubBandContainer.getNewSubBandInstance();
 				

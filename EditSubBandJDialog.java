@@ -1,6 +1,5 @@
 package loomisWood;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,12 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class EditSubBandJDialog extends JDialog
+public class EditSubBandJDialog extends CustomJDialog
 {
 	private static final long serialVersionUID = 5586526285258832499L;
 	
@@ -29,14 +27,7 @@ public class EditSubBandJDialog extends JDialog
 
 	public EditSubBandJDialog(int widthIn, int heightIn, String titleIn, Image iconIn, int indexOfSubBand)
 	{
-		setTitle(titleIn);
-		setSize(widthIn, heightIn);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setTitle(titleIn);
-		setIconImage(iconIn);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setModal(true);
+		super(widthIn, heightIn, titleIn, iconIn);
 		
 		this.indexOfSubBand = indexOfSubBand;
 		
@@ -63,7 +54,7 @@ public class EditSubBandJDialog extends JDialog
 		
 		confirmButton = new JButton("Confirm");
 		
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 	}
 
 	private void setComponentSettings()

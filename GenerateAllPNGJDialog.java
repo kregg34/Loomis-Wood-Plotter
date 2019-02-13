@@ -56,7 +56,7 @@ public class GenerateAllPNGJDialog extends CustomJDialog
 		widthLabel    = new JLabel("Row Width");
 		selectedLabel = new JLabel("Folder Selected: None");
 		
-		panel         = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel         = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 		fileChooser   = new JFileChooser();
 	}
 

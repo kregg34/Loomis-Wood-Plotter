@@ -106,7 +106,7 @@ public class GUIForLoomisWood
 		displayMenu = new JMenu("Display");
 		helpMenu = new JMenu("Help");
 
-		loadSpectra = new JMenuItem("Load Spectra File");
+		loadSpectra = new JMenuItem("Load Spectrum File");
 		loadExcelAssignments = new JMenuItem("Load Assignments from Excel Peak List");
 		saveExcelAssignments = new JMenuItem("Save Assignments to an Excel Peak List");
 		saveAssignments = new JMenuItem("Save Assignments...");
@@ -117,7 +117,7 @@ public class GUIForLoomisWood
 		splitDiagram = new JMenuItem("Split the Diagram into parts");
 		setIntensity = new JMenuItem("Set Intensity Range");
 		editAssignments = new JMenuItem("Edit Assignments");
-		helpItem = new JMenuItem("Features and Genereal Information");
+		helpItem = new JMenuItem("Features and General Information");
 		generatePNG = new JMenuItem("Create a single Loomis-Wood image");
 		generateAllPNG = new JMenuItem("Create many Loomis-Wood images");
 
@@ -475,7 +475,7 @@ public class GUIForLoomisWood
 			chartPanel.setPreferredSize(new Dimension(100, 300));
 			chartPanel.setMouseWheelEnabled(true);
 			chartPanel.setDismissDelay(100000000);
-			chartPanel.getChart().setBackgroundPaint(new Color(164, 171, 181));
+			chartPanel.getChart().setBackgroundPaint(new Color(95, 144, 168));
 			chartPanelArray.add(chartPanel);
 			
 			gbc.gridy = i + 1;
@@ -511,7 +511,7 @@ public class GUIForLoomisWood
 			
 			if(fileInfo == null)
 			{
-				JOptionPane.showMessageDialog(null, "Need to Load a Spectra File");
+				JOptionPane.showMessageDialog(null, "Need to Load a Spectrum File");
 				return;
 			}
 			
@@ -568,7 +568,7 @@ public class GUIForLoomisWood
 			
 			if(e.getSource() == addNew) 
 			{
-				new AddAssignmentJDialog(400, 760, "Add a New Assignment", ICON);
+				new AddAssignmentJDialog(400, 800, "Add a New Assignment", ICON);
 			}
 			
 			if(e.getSource() == setIntensity) 

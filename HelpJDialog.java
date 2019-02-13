@@ -1,6 +1,5 @@
 package loomisWood;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -33,7 +32,7 @@ public class HelpJDialog extends CustomJDialog
 	{
 		textArea = new JTextArea();
 		scrollPane = new JScrollPane();
-		panel = new GradientPanel(new Color(185, 188, 191), new Color(90, 92, 94));
+		panel = new GradientPanel(BACKGROUND_COLOR_1, BACKGROUND_COLOR_2);
 	}
 
 	private void setComponentSettings()
