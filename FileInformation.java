@@ -14,8 +14,8 @@ public class FileInformation implements Serializable
 	
 	private final File FILE;
 	
-	private ArrayList<Double> xValues = new ArrayList<Double>();
-	private ArrayList<Double> yValues = new ArrayList<Double>();
+	private static ArrayList<Double> xValues = new ArrayList<Double>();
+	private static ArrayList<Double> yValues = new ArrayList<Double>();
 
 	private char[] charArray;
 	
@@ -69,12 +69,12 @@ public class FileInformation implements Serializable
 		return xValues.get(xValues.size() - 1);
 	}
 	
-	public ArrayList<Double> getXValues()
+	public static ArrayList<Double> getXValues()
 	{
 		return xValues;
 	}
 	
-	public ArrayList<Double> getYValues()
+	public static ArrayList<Double> getYValues()
 	{
 		return yValues;
 	}
@@ -123,5 +123,36 @@ public class FileInformation implements Serializable
 		}
 		
 		return null;
+	}
+	
+	//Binary search for a close value, returns -1 if nothing was found
+	public static int convertValueToClosestIndex(double valueToFind, double tolerance) 
+	{
+		final double LOG_BASE2  = Math.log(2);
+		int minIndex            = 0;
+		int maxIndex            = xValues.size() - 1;
+		
+		//Binary search
+		for(int i = 0; i <= (Math.log(xValues.size()) / LOG_BASE2) ; i++)
+		{
+			int currentIndex = (minIndex + maxIndex) / 2;
+			
+			//if true, found a value within the tolerance range
+			if(Math.abs(xValues.get(currentIndex) - valueToFind) <= tolerance)
+			{
+				return currentIndex;
+			}
+			
+			//update the search range
+			if(xValues.get(currentIndex) < valueToFind) 
+			{
+				minIndex = currentIndex + 1; 
+			}else
+			{
+				maxIndex = currentIndex - 1;
+			}
+		}
+		
+		return -1;
 	}
 }

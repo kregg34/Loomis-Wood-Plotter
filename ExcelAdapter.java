@@ -85,13 +85,18 @@ public class ExcelAdapter implements ActionListener
 			// cells
 			int numcols = jTable1.getSelectedColumnCount();
 			int numrows = jTable1.getSelectedRowCount();
-			int[] rowsselected = jTable1.getSelectedRows();
-			int[] colsselected = jTable1.getSelectedColumns();
+			int[] rowsSelected = jTable1.getSelectedRows();
+			int[] colsSelected = jTable1.getSelectedColumns();
 			
-			if (!((numrows-1 == rowsselected[rowsselected.length-1]-rowsselected[0] &&
-					numrows == rowsselected.length) &&
-					(numcols-1 == colsselected[colsselected.length-1]-colsselected[0] &&
-					numcols == colsselected.length)))
+			if(colsSelected.length == 0 || rowsSelected.length == 0) 
+			{
+				return;
+			}
+			
+			if (!((numrows-1 == rowsSelected[rowsSelected.length-1]-rowsSelected[0] &&
+					numrows == rowsSelected.length) &&
+					(numcols-1 == colsSelected[colsSelected.length-1]-colsSelected[0] &&
+					numcols == colsSelected.length)))
 			{
 				JOptionPane.showMessageDialog(null, "Invalid Copy Selection",
 						"Invalid Copy Selection", JOptionPane.ERROR_MESSAGE);
@@ -102,7 +107,7 @@ public class ExcelAdapter implements ActionListener
 			{
 				for (int j=0;j<numcols;j++)
 				{
-					sbf.append(jTable1.getValueAt(rowsselected[i],colsselected[j]));
+					sbf.append(jTable1.getValueAt(rowsSelected[i],colsSelected[j]));
 					if (j<numcols-1) sbf.append("\t");
 				}
 				sbf.append("\n");
@@ -115,6 +120,12 @@ public class ExcelAdapter implements ActionListener
 		
 		if (e.getActionCommand().compareTo("Paste") == 0)
 		{
+			if((jTable1.getSelectedRows()).length == 0 ||
+					(jTable1.getSelectedColumns()).length == 0) 
+			{
+				return;
+			}
+			
 			int startRow = (jTable1.getSelectedRows())[0];
 			int startCol = (jTable1.getSelectedColumns())[0];
 			

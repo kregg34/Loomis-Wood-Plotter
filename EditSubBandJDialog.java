@@ -178,6 +178,9 @@ public class EditSubBandJDialog extends CustomJDialog
 					SubBandContainer.getItemAt(indexOfSubBand).setLowerVt(lowerVt);
 					SubBandContainer.getItemAt(indexOfSubBand).setNote(note);
 					
+					GUIForLoomisWood.goBackNPages(1);
+					GUIForLoomisWood.updateCharts();
+					
 					JOptionPane.showMessageDialog(null, "Changes Saved");
 					
 					dispose();

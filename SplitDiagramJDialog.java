@@ -54,6 +54,7 @@ public class SplitDiagramJDialog extends CustomJDialog
 		panel.setLayout(new GridBagLayout());
 		
 		comboBox.setPreferredSize(new Dimension(200,30));
+		comboBox.setFocusable(false);
 		comboBox.setFont(new Font("Times new Roman", Font.PLAIN, 22));
 		((JLabel)comboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		

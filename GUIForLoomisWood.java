@@ -65,9 +65,10 @@ public class GUIForLoomisWood
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu, assignmentMenu, displayMenu, helpMenu;   
-	private JMenuItem loadSpectra, loadExcelAssignments, saveExcelAssignments, saveAssignments, 
+	private JMenuItem loadSpectra, saveExcelAssignments, saveAssignments, 
 						loadAssignments, generateDiagram, generatePNG, generateAllPNG,
-						toggle, addNew, setIntensity, editAssignments, helpItem, splitDiagram; 
+						toggle, addNew, setIntensity, editAssignments, helpItem, splitDiagram,
+						unloadAssignments; 
 	
 	private JFileChooser fileChooser;
 	private File file;
@@ -107,9 +108,9 @@ public class GUIForLoomisWood
 		helpMenu = new JMenu("Help");
 
 		loadSpectra = new JMenuItem("Load Spectrum File");
-		loadExcelAssignments = new JMenuItem("Load Assignments from Excel Peak List");
 		saveExcelAssignments = new JMenuItem("Save Assignments to an Excel Peak List");
 		saveAssignments = new JMenuItem("Save Assignments...");
+		unloadAssignments = new JMenuItem("Unload Assignments");
 		loadAssignments = new JMenuItem("Load Assignments...");
 		generateDiagram = new JMenuItem("Create Loomis-Wood Diagram");
 		toggle = new JMenuItem("Toggle Assignment Overlay");
@@ -168,12 +169,12 @@ public class GUIForLoomisWood
 		fileMenu.add(saveAssignments);
 		fileMenu.add(loadAssignments);
 		fileMenu.add(saveExcelAssignments);
-		fileMenu.add(loadExcelAssignments);
 
 		assignmentMenu.setPreferredSize(new Dimension(115,25));
 		assignmentMenu.setFont(font);
 		assignmentMenu.add(addNew);
 		assignmentMenu.add(editAssignments);
+		assignmentMenu.add(unloadAssignments);
 
 		displayMenu.setPreferredSize(new Dimension(70,25));
 		displayMenu.setFont(font);
@@ -189,11 +190,11 @@ public class GUIForLoomisWood
 		helpMenu.add(helpItem);
 		
 		loadSpectra.addActionListener(new EventHandling());
-		loadExcelAssignments.addActionListener(new EventHandling());
 		saveExcelAssignments.addActionListener(new EventHandling());
 		saveAssignments.addActionListener(new EventHandling());
 		loadAssignments.addActionListener(new EventHandling());
 		editAssignments.addActionListener(new EventHandling());
+		unloadAssignments.addActionListener(new EventHandling());
 		helpItem.addActionListener(new EventHandling());
 		generateDiagram.addActionListener(new EventHandling());
 		generatePNG.addActionListener(new EventHandling());
@@ -289,7 +290,7 @@ public class GUIForLoomisWood
 		}else
 		{
 			subLoomisPanel.remove(infoHeader);
-			updateChartsIntoParts();
+			updateCharts();
 		}
 		
 		frame.repaint();
@@ -310,34 +311,6 @@ public class GUIForLoomisWood
 		
 		frame.repaint();
 		frame.revalidate();
-	}
-	
-	//Renders the charts into parts
-	public static void updateChartsIntoParts()
-	{
-		//base case: Nothing is displayed
-		if(chartStartValues.size() == 0)
-		{
-			return;
-		}
-		
-		//update each chart
-		for(int i = 0; i < chartPanelArray.size(); i++) 
-		{
-			JFreeChart chart = chartPanelArray.get(i).getChart();
-			
-			double lowerBoundToBeShown, upperBoundToBeShown;
-			
-			double chunkSize = widthValue * (1.0 / numberOfParts);
-			
-			lowerBoundToBeShown = chartStartValues.get(i) + ((currentPart - 1) * chunkSize);
-			upperBoundToBeShown = chartStartValues.get(i) + (currentPart * chunkSize);
-			
-			int lowIndex = loomisObject.convertValueToClosestIndex(lowerBoundToBeShown, TOLERANCE);
-			int highIndex = loomisObject.convertValueToClosestIndex(upperBoundToBeShown, TOLERANCE);
-			
-			loomisObject.updatePlot(chart, lowIndex, highIndex, chunkSize);
-		}
 	}
 	
 	//used for a multiple image call
@@ -450,29 +423,63 @@ public class GUIForLoomisWood
 		
 		for(int i = 0; i < chartPanelArray.size(); i++) 
 		{
-			chartStartValues.add(startValue);
+			if(numberOfParts > 1) 
+			{
+				chartStartValues.add(startValue);
+			}
 			
-			int startIndex = loomisObject.convertValueToClosestIndex(startValue, TOLERANCE);
-			int endIndex   = loomisObject.convertValueToClosestIndex(endValue  , TOLERANCE);
+			int startIndex = FileInformation.convertValueToClosestIndex(startValue, TOLERANCE);
+			int endIndex   = FileInformation.convertValueToClosestIndex(endValue  , TOLERANCE);
 
-			loomisObject.updatePlot(chartPanelArray.get(i).getChart(), startIndex, endIndex, widthValue);
+			LoomisDisplay.updatePlot(chartPanelArray.get(i).getChart(), startIndex, endIndex, widthValue);
 			
 			startValue = endValue;
 			endValue   = startValue + widthValue;
 		}
 	}
 	
+	
+	//Renders the charts into parts
+	public static void updateChartsIntoParts()
+	{
+		//For when no Loomis plots are are displayed
+		if(chartStartValues.size() == 0)
+		{
+			return;
+		}
+		
+		//update each chart
+		for(int i = 0; i < chartPanelArray.size(); i++) 
+		{
+			JFreeChart chart = chartPanelArray.get(i).getChart();
+			
+			double lowerBoundToBeShown, upperBoundToBeShown;
+			
+			double chunkSize = widthValue * (1.0 / numberOfParts);
+			
+			lowerBoundToBeShown = chartStartValues.get(i) + ((currentPart - 1) * chunkSize);
+			upperBoundToBeShown = chartStartValues.get(i) + (currentPart * chunkSize);
+			
+			int lowIndex = FileInformation.convertValueToClosestIndex(lowerBoundToBeShown, TOLERANCE);
+			int highIndex = FileInformation.convertValueToClosestIndex(upperBoundToBeShown, TOLERANCE);
+			
+			LoomisDisplay.updatePlot(chart, lowIndex, highIndex, chunkSize);
+		}
+	}
+	
+	
 	private void addEmptyPlots()
 	{
 		gbc.insets = new Insets(0,0,0,0);
 		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 0.98;
-		gbc.weighty = 0.98;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		
 		for(int i = 0; i < 5; i++)
 		{
 			ChartPanel chartPanel = LoomisDisplay.getEmptyPlot();
 			chartPanel.setPreferredSize(new Dimension(100, 300));
+			chartPanel.setInitialDelay(0);
 			chartPanel.setMouseWheelEnabled(true);
 			chartPanel.setDismissDelay(100000000);
 			chartPanel.getChart().setBackgroundPaint(new Color(95, 144, 168));
@@ -517,13 +524,19 @@ public class GUIForLoomisWood
 			
 			if(e.getSource() == saveExcelAssignments) 
 			{
-				JOptionPane.showMessageDialog(null, "Not implemented yet :(");
-			}
-			
-			if(e.getSource() == loadExcelAssignments) 
-			{
-				//new ReadPeakFileAssignments();
-				JOptionPane.showMessageDialog(null, "Not implemented yet :(");
+				int result = JOptionPane.showConfirmDialog(null, "This assumes that the peak list\nis the first sheet"
+						+ " in the Excel file.\nIs this correct?", 
+						"Continue?", JOptionPane.YES_NO_OPTION);
+				
+				if(result == 0)
+				{
+					new SaveAssignmentsToExcel();
+				}else if (result == 1)
+				{
+					JOptionPane.showMessageDialog(null, "Please make the peak list the first sheet.");
+				}
+				
+				return;
 			}
 			
 			if(e.getSource() == saveAssignments) 
@@ -533,12 +546,40 @@ public class GUIForLoomisWood
 			
 			if(e.getSource() == loadAssignments) 
 			{
-				loadAssignments();
+				int result = JOptionPane.showConfirmDialog(null, "This will override all assignments in favor "
+						+ "\nof the ones about to be loaded in."
+						+ "\nContinue?", 
+						"Continue?", JOptionPane.YES_NO_OPTION);
+				
+				if(result == 0)
+				{
+					loadAssignments();
+				}else
+				{
+					return;
+				}
 			}
 			
 			if(e.getSource() == editAssignments) 
 			{
 				new ViewAssignmentsJDialog(450, 660, "Assignments", ICON);
+			}
+			
+			if(e.getSource() == unloadAssignments) 
+			{
+				int result = JOptionPane.showConfirmDialog(null, "This will clear all assignments in"
+						+ " memory.\nAre you sure you wish to continue?", 
+						"Clear Assignments?", JOptionPane.YES_NO_OPTION);
+				
+				if(result == 0)
+				{
+					SubBandContainer.clearAssignments();
+				}else
+				{
+					return;
+				}
+				
+				JOptionPane.showMessageDialog(null, "Assignments cleared!");
 			}
 			
 			if(e.getSource() == generateDiagram) 
@@ -592,7 +633,7 @@ public class GUIForLoomisWood
 	{
 		if(fileInfo != null)
 		{
-			JOptionPane.showMessageDialog(null, "Already have a spectra loaded");
+			JOptionPane.showMessageDialog(null, "Already have a spectrum loaded");
 			return;
 		}
 		
@@ -611,7 +652,7 @@ public class GUIForLoomisWood
 			long stop = System.currentTimeMillis();
 			JOptionPane.showMessageDialog(null, "Finished loading\nLoad time: " + (stop-start)/1000.0 + " seconds");
 			
-			loomisObject = new LoomisDisplay(fileInfo);
+			loomisObject = new LoomisDisplay();
 		}else 
 		{
 			return;
@@ -630,9 +671,15 @@ public class GUIForLoomisWood
 			outputFile = fileChooser.getSelectedFile();
 			String filePath = outputFile.getPath();
 			
-			if(!filePath.toLowerCase().endsWith(".ser"))
+			if(!filePath.contains("."))
 			{
-				outputFile = new File(filePath.substring(0, filePath.indexOf('.')) + ".ser");
+				outputFile = new File(filePath + ".ser");
+			}else 
+			{
+				if(!filePath.endsWith(".ser"))
+				{
+					outputFile = new File(filePath.substring(0, filePath.indexOf('.')) + ".ser");
+				}
 			}
 			
 	        try 
@@ -653,6 +700,7 @@ public class GUIForLoomisWood
 		
 		JOptionPane.showMessageDialog(null, "Save Successful");
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private void loadAssignments() 
@@ -678,6 +726,7 @@ public class GUIForLoomisWood
 				ois.close();
 			}catch(Exception ex) 
 			{
+				JOptionPane.showMessageDialog(null, "Issue reading file. Likely incorrect file type or incompartable .ser file.");
 				ex.printStackTrace();
 			}
 		}else 
@@ -687,23 +736,32 @@ public class GUIForLoomisWood
 		
 		JOptionPane.showMessageDialog(null, "Assignments are now loaded");
 	}
+	
+	
+	public static void goBackNPages(int numPages) 
+	{
+		int scaleByNumOfRows = numPages * 5;
+		
+		endValue = startValue - (scaleByNumOfRows - 1) * widthValue;
+		startValue = startValue - scaleByNumOfRows * widthValue;
+	}
+	
 
 	private void toggleOverlayState() 
 	{
-		for(ChartPanel panel : chartPanelArray)
-		{
-			LoomisDisplay.toggleRenderer(panel.getChart());
-		}
+		LoomisDisplay.flipToggleFlag();
+		
+		//reset the start and end values
+		goBackNPages(1);
+		updateCharts();
 		
 		if(LoomisDisplay.getToggleState()) 
 		{
-			JOptionPane.showMessageDialog(null, "Assignments now hidden from display");
+			JOptionPane.showMessageDialog(null, "Assignments now visible in the display");
 		}else 
 		{
-			JOptionPane.showMessageDialog(null, "Assignments now visible in the display");
+			JOptionPane.showMessageDialog(null, "Assignments now hidden from display");
 		}
-		
-		LoomisDisplay.flipToggleFlag();
 	}
 	
 	//called by either the right button or the GenerateAllPNGJDialog class
@@ -727,8 +785,7 @@ public class GUIForLoomisWood
 	{
 		if(currentPart == 1) 
 		{
-			endValue = startValue - 9 * widthValue;
-			startValue = startValue - 10 * widthValue;
+			goBackNPages(2);
 			currentPart = numberOfParts;
 			updateCharts();
 		}else 

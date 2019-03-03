@@ -108,7 +108,9 @@ public class ViewAssignmentsJDialog extends CustomJDialog
 		
 		table.setModel(model);
 		table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 18));
-		table.setRowHeight(80);
+		table.setRowHeight(110);
+        table.getTableHeader().setForeground(Color.RED);
+        table.getTableHeader().setBackground(Color.DARK_GRAY);
 		
 		table.addMouseListener(new MouseAdapter() 
 		{

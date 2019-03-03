@@ -8,15 +8,15 @@ public class Branch implements Serializable
 	private static final long serialVersionUID = -7371108724513933096L;
 	
 	private String type;     			//eg. Q, P, R, Q+<- etc...
-	private ArrayList<Tuple> branch;
+	private ArrayList<AssignedPoint> branch;
 	
-	public Branch(String type, ArrayList<Tuple> branch)
+	public Branch(String type, ArrayList<AssignedPoint> branch)
 	{
 		this.type   = type;
 		this.branch = branch;
 	}
 	
-	public ArrayList<Tuple> getBranchData()
+	public ArrayList<AssignedPoint> getBranchData()
 	{
 		return branch;
 	}

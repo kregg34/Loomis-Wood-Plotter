@@ -95,12 +95,13 @@ public class AddAssignmentJDialog extends CustomJDialog
 		lowerVtLabel.setPreferredSize(labelDim);
 		upperVtLabel.setPreferredSize(labelDim);
 		
-		lowerKLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		upperKLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		lowerVtLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		upperVtLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		noteLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		symmetryLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		Font labelFont = new Font("Arial", Font.PLAIN, 22);
+		lowerKLabel.setFont(labelFont);
+		upperKLabel.setFont(labelFont);
+		lowerVtLabel.setFont(labelFont);
+		upperVtLabel.setFont(labelFont);
+		noteLabel.setFont(labelFont);
+		symmetryLabel.setFont(labelFont);
 		
 		Dimension fieldDim = new Dimension(100,30);
 		lowerKField.setPreferredSize(fieldDim);
@@ -110,15 +111,24 @@ public class AddAssignmentJDialog extends CustomJDialog
 		noteField.setPreferredSize(fieldDim);
 		noteField.setBackground(Color.LIGHT_GRAY);
 		
+		Font fieldFont = new Font("Arial", Font.PLAIN, 20);
+		lowerKField.setFont(fieldFont);
+		upperKField.setFont(fieldFont);
+		lowerVtField.setFont(fieldFont);
+		upperVtField.setFont(fieldFont);
+		noteField.setFont(fieldFont);
+		
 		addAssignButton.addActionListener(new EventHandling());
 		addAssignButton.setPreferredSize(new Dimension(100,30));
 		addAssignButton.setFocusable(false);
 		addAssignButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		addAssignButton.setFont(fieldFont);
 		
 		addBranchButton.addActionListener(new EventHandling());
 		addBranchButton.setPreferredSize(new Dimension(100,30));
 		addBranchButton.setFocusable(false);
 		addBranchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		addBranchButton.setFont(fieldFont);
 		
 		symmetryBox.setPreferredSize(new Dimension(100,30));
 		symmetryBox.setFocusable(false);

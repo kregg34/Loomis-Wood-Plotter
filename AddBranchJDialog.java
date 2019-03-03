@@ -1,5 +1,6 @@
 package loomisWood;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -93,14 +94,16 @@ public class AddBranchJDialog extends CustomJDialog
 		SubBand selectedSubBand = SubBandContainer.getItemAt(selectedSubBandIndex);
 		Branch selectedBranch   = selectedSubBand.getBranchAt(selectedBranchIndex);
 		
-		ArrayList<Tuple> branchArray = selectedBranch.getBranchData();
+		ArrayList<AssignedPoint> branchArray = selectedBranch.getBranchData();
 		
-		for(Tuple tuple : branchArray) 
+		for(AssignedPoint point : branchArray) 
 		{
-			int jValue = tuple.getJValue();
-			double waveNumber = tuple.getWavenumber();
+			int jValue = point.getJValue();
+			double waveNumber = point.getWavenumber();
+			String intensity = point.getIntensityStr();
 			
 			((DefaultTableModel) table.getModel()).setValueAt(waveNumber + "", jValue, 1);
+			((DefaultTableModel) table.getModel()).setValueAt(intensity, jValue, 2);
 		}
 	}
 
@@ -163,11 +166,29 @@ public class AddBranchJDialog extends CustomJDialog
 			data[j][0] = j;
 		}
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        	
+			private static final long serialVersionUID = 589154757409975790L;
+
+			@Override 
+    	    public boolean isCellEditable(int row, int column)
+    	    {
+    	        if(column == 0) 
+    	        {
+    	        	return false;
+    	        }else 
+    	        {
+    	        	return true;
+    	        }
+    	    }
+        };
         
         table.setModel(model);
         table.getColumn(columnNames[1]).setPreferredWidth(230);
         table.getColumn(columnNames[2]).setPreferredWidth(230);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 22));
+        table.getTableHeader().setForeground(Color.RED);
+        table.getTableHeader().setBackground(Color.DARK_GRAY);
         
         scrollPane.setPreferredSize(new Dimension(400, 510));
 	}
@@ -209,7 +230,7 @@ public class AddBranchJDialog extends CustomJDialog
 		{
 			if(e.getSource() == confirmButton)
 			{
-				ArrayList<Tuple> branchArr = new ArrayList<Tuple>();
+				ArrayList<AssignedPoint> branchArr = new ArrayList<AssignedPoint>();
 				String transitionType = (String) branchType.getSelectedItem();
 				
 				CellEditor cellEditor = table.getCellEditor();
@@ -231,18 +252,20 @@ public class AddBranchJDialog extends CustomJDialog
 						
 						int jVal;
 						double waveNum;
+						String intensity;
 						
 						try
 						{
 							jVal = Integer.parseInt(table.getValueAt(row, 0) + "");
 							waveNum = Double.parseDouble(table.getValueAt(row, 1) + "");
+							intensity = table.getValueAt(row, 2) + "";
 						}catch(NumberFormatException nfe) 
 						{
 							JOptionPane.showMessageDialog(null, "Trouble reading one of the cells");
 							return;
 						}
 
-						branchArr.add(new Tuple(jVal, waveNum));
+						branchArr.add(new AssignedPoint(jVal, waveNum, intensity));
 					
 					}
 				}
@@ -258,14 +281,18 @@ public class AddBranchJDialog extends CustomJDialog
 				//logic for deciding how to add the new Branch to the SubBandContainer
 				if(isAddingToExistingSubBand) 
 				{
-					JOptionPane.showMessageDialog(null, "The branch was successfully added");
 					SubBandContainer.addBranchToExistingSubBand(selectedSubBandIndex, newBranch);
+					GUIForLoomisWood.goBackNPages(1);
+					GUIForLoomisWood.updateCharts();
+					JOptionPane.showMessageDialog(null, "The branch was successfully added");
 				}else
 				{
 					if(isInEditMode) 
 					{
-						JOptionPane.showMessageDialog(null, "Edit Successful");
 						SubBandContainer.swapBranchAt(selectedSubBandIndex, selectedBranchIndex, newBranch);
+						GUIForLoomisWood.goBackNPages(1);
+						GUIForLoomisWood.updateCharts();
+						JOptionPane.showMessageDialog(null, "Edit Successful");
 					}else 
 					{
 						SubBandContainer.addBranch(newBranch);

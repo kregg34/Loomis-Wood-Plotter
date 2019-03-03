@@ -65,6 +65,11 @@ public class SubBandContainer implements Serializable
 		tolerance = toleranceVal;
 	}
 	
+	public static double getTolerance() 
+	{
+		return tolerance;
+	}
+	
 	public static int getNumBranches() 
 	{
 		return subBand.getNumBranches();
@@ -78,6 +83,12 @@ public class SubBandContainer implements Serializable
 	public static void getNewSubBandInstance()
 	{
 		subBand = new SubBand();
+	}
+	
+	public static void clearAssignments() 
+	{
+		subBandArray.clear();
+		getNewSubBandInstance();
 	}
 	
 	public static SubBand getItemAt(int index)
@@ -99,13 +110,36 @@ public class SubBandContainer implements Serializable
 		{
 			for(Branch branch: band.getBranches()) 
 			{
-				for(Tuple tuple: branch.getBranchData())
+				for(AssignedPoint point: branch.getBranchData())
 				{
-					if(Math.abs(tuple.getWavenumber() - valToCheck) <= tolerance)
+					if(Math.abs(point.getWavenumber() - valToCheck) <= tolerance)
 					{
-						assignmentInfo.add(branch.getType() + "<br>J value: " + tuple.getJValue());
+						assignmentInfo.add(branch.getType().replace("<", "&lt;") + "<br>J value: " + point.getJValue());
 						assignmentInfo.add(band.toStringHTML());
 						return assignmentInfo;
+					}
+				}
+			}
+		}
+		
+		return assignmentInfo;
+	}
+	
+	public static String getAssignmentInfoStr(double valToCheck)
+	{
+		String assignmentInfo = "";
+		
+		for(SubBand band: subBandArray)
+		{
+			for(Branch branch: band.getBranches()) 
+			{
+				for(AssignedPoint point: branch.getBranchData())
+				{
+					if(Math.abs(point.getWavenumber() - valToCheck) <= tolerance)
+					{
+						assignmentInfo += branch.getType() + "(" + point.getJValue()
+						+ ") " + band.getUpperK() + "-" + band.getLowerK() + band.getSymmetry() 
+						+ " vt=" + band.getUpperVt() + "-" + band.getLowerVt();
 					}
 				}
 			}
@@ -120,7 +154,7 @@ public class SubBandContainer implements Serializable
 		{
 			for(Branch branch: band.getBranches()) 
 			{
-				for(Tuple tuple: branch.getBranchData())
+				for(AssignedPoint tuple: branch.getBranchData())
 				{
 					if(Math.abs(tuple.getWavenumber() - valToCheck) <= tolerance)
 					{
@@ -131,6 +165,29 @@ public class SubBandContainer implements Serializable
 		}
 		
 		return false;
+	}
+	
+	
+	public static ArrayList<AssignedPoint> getAssignedPoints(double xAxisLow, double xAxisHigh)
+	{
+		ArrayList<AssignedPoint> points = new ArrayList<AssignedPoint>();
+		
+		for(SubBand band: subBandArray)
+		{
+			for(Branch branch: band.getBranches()) 
+			{
+				for(AssignedPoint point: branch.getBranchData())
+				{
+					double waveNum = point.getWavenumber();
+					if(waveNum >= xAxisLow && waveNum <= xAxisHigh)
+					{
+						points.add(point);
+					}
+				}
+			}
+		}
+		
+		return points;
 	}
 	
 	//Used for testing
@@ -144,9 +201,9 @@ public class SubBandContainer implements Serializable
 			for(Branch branch: band.getBranches()) 
 			{
 				System.out.println("NEW BRANCH... (" + branch.getType() + ")");
-				for(Tuple tuple: branch.getBranchData())
+				for(AssignedPoint tuple: branch.getBranchData())
 				{
-					System.out.println(tuple.getWavenumber());
+					System.out.println(tuple.getWavenumber() + " Intensity: " + tuple.getIntensity());
 				}
 				System.out.println();
 			}

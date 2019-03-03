@@ -79,9 +79,13 @@ public class HelpJDialog extends CustomJDialog
 				"    whill start from, the second is the wavenumber value of where the images will go to, and the\r\n" + 
 				"    final is the row width of the Loomis-Wood diagrams.\r\n" + 
 				"11) Save and Load the assignments currently in memory. This is done by going to File -> Save Assignments...\r\n" + 
-				"      or File -> Load Assignments...\r\n" + 
-				"12) In the File tab, reading and writing to Excel Peak Lists is a planned feature.\r\n" + 
-				"\r\n";
+				"      or File -> Load Assignments... Loaded files must be \".ser\" (which are created when saving assignments)\r\n" + 
+				"12) In the File tab, selecting \"Save assignments to an Excel Peak list\" will search through the peak list"
+				+ " and add assignments that match line positions in the file. This assumes that the wavenumbers are in the"
+				+ " first column, intensities in the second, and that the peak list itself is the first sheet in the workbook."
+				+ " This will not overwrite existing assignments listed."
+				+ " The program will attempt to put the assignments in the third column, but if text is already there, then"
+				+ " it will place it on the next empty spot for that row.";
 		
 		textArea.setFont(new Font("Times new Roman", Font.PLAIN, 22));
 		textArea.setEditable(false);
