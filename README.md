@@ -1,5 +1,5 @@
 # Loomis-Wood-Plotter
-Graphical program for displaying data in a Loomis-Wood format; Useful for the data analysis of asymmetric top molecules.
+Graphical program for displaying data in a Loomis-Wood format; Useful for the data analysis of molecular spectra.
 
 # Currently Implemented Features:
 1)  View the spectra in a Loomis-Wood format by going to Display -> Create Loomis-Wood Diagram and 
@@ -26,7 +26,8 @@ Graphical program for displaying data in a Loomis-Wood format; Useful for the da
     whill start from, the second is the wavenumber value of where the images will go to, and the
     final is the row width of the Loomis-Wood diagrams.
 11) Save and Load the assignments currently in memory. This is done by going to File -> Save Assignments...
-    or File -> Load Assignments...
+    or File -> Load Assignments... Loaded files must be ".ser" (which are created when saving assignments)
+12) In the File tab, selecting "Save assignments to an Excel Peak list" will search through the peak list and add assignments that match     line positions in the file. This assumes that the wavenumbers are in the first column, intensities in the second, and that the peak     list itself is the first sheet in the workbook. This will not overwrite existing assignments listed. The program will attempt to put     the assignments in the third column, but if text is already there, then it will place it on the next empty spot for that row.
 
 # Screenshots
 
