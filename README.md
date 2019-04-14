@@ -1,5 +1,5 @@
 # Loomis-Wood-Plotter
-Graphical program for displaying data in a Loomis-Wood format; Useful for the data analysis of molecular spectra.
+Graphical program for displaying data in a Loomis-Wood format. The program also stores assignments and overlays the assignments onto the screen. Useful in rotational spectroscopy.
 
 # Currently Implemented Features:
 1)  View the spectra in a Loomis-Wood format by going to Display -> Create Loomis-Wood Diagram and 
@@ -31,8 +31,8 @@ Graphical program for displaying data in a Loomis-Wood format; Useful for the da
 
 # Screenshots
 
-![loomis-plotter 1](https://user-images.githubusercontent.com/36011386/51076489-70227c80-166f-11e9-93de-bae41656add6.PNG)
+![Loomis Plotter 1](https://user-images.githubusercontent.com/36011386/56087794-7976dd00-5e48-11e9-859d-6601c29f2dbd.PNG)
+![Loomis Plotter 3](https://user-images.githubusercontent.com/36011386/56087795-7976dd00-5e48-11e9-8c21-3b4b3d3ae049.PNG)
+![Loomis Plotter 4](https://user-images.githubusercontent.com/36011386/56087792-78de4680-5e48-11e9-876f-dd2ce2aae776.PNG)
+![Loomis Plotter 5](https://user-images.githubusercontent.com/36011386/56087793-78de4680-5e48-11e9-9979-375bc4c47531.PNG)
 
-![loomis-plotter 2](https://user-images.githubusercontent.com/36011386/51076492-73b60380-166f-11e9-9c52-8b9b02a3e1f4.PNG)
-
-![loomis-plotter 3](https://user-images.githubusercontent.com/36011386/51076493-744e9a00-166f-11e9-87b9-6b2717e180a8.PNG)
